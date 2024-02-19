@@ -3,9 +3,6 @@ import java.util.HashMap;
 
 public class TaskManager {
     public static int id = 0;
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    //HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     // генерация id
     public static int generateId() {
@@ -56,13 +53,11 @@ public class TaskManager {
 
     // получение задачи по идентификатору
     public static Task getTaskById(int id, HashMap<Integer, Task> tasks) {
-        Task task = tasks.get(id);
-        return task ;
+        return tasks.get(id) ;
     }
 
     public static Epic getEpicById(int id, HashMap<Integer, Epic> epics) {
-        Epic epic = epics.get(id);
-        return  epic;
+        return  epics.get(id);
     }
 
     public static Subtask getSubtaskById(int id, HashMap<Integer, Epic> epics) {
@@ -118,11 +113,11 @@ public class TaskManager {
     }
 
     // обновление задачи
-    public void updateTask(Task updateTask){
+    public static void updateTask(Task updateTask, HashMap<Integer, Task> tasks){
         tasks.put(updateTask.getId(), updateTask);
     }
 
-    public void updateSubtask(Subtask updateSubtask, Epic subtasksEpic){
+    public static void updateSubtask(Subtask updateSubtask, Epic subtasksEpic){
               for (int i = 0; i < subtasksEpic.epicSubtasks.size(); i++){
                   if(subtasksEpic.epicSubtasks.get(i).getId() == updateSubtask.getId()){
                       subtasksEpic.epicSubtasks.add(i,updateSubtask);
@@ -131,7 +126,7 @@ public class TaskManager {
           }
     }
 
-    public void updateEpic(Epic updateEpic){
+    public static void updateEpic(Epic updateEpic, HashMap<Integer, Epic> epics){
         epics.put(updateEpic.getId(), updateEpic);
     }
 }
