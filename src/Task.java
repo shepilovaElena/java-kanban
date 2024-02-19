@@ -1,13 +1,36 @@
+import java.util.HashMap;
+import java.util.Objects;
+
 public class Task {
     private String name;
     private String description;
-    private int id = 0; // модификаторы доступа?
+    private TaskStatus taskStatus;
+    private int id;
+
 
     public Task(String name, String description) {
+        this.taskStatus = TaskStatus.NEW;
         this.name = name;
         this.description = description;
-        this.id++;
+        this.id = 0;
 
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setName(String name) {
@@ -18,19 +41,31 @@ public class Task {
         this.description = description;
     }
 
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(name, task.name) && Objects.equals(description, task.description);
     }
 
-    public String getDescription() {
-        return description;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description);
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
