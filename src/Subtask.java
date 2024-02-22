@@ -1,11 +1,42 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Objects;
 
 public class Subtask extends Task {
 
-   public Subtask(String name, String description){
-   super(name, description);
+   private int epicId;
+
+
+   public Subtask(String name, String description, int epicId, TaskStatus taskStatus){
+          super(name, description, taskStatus);
+          this.epicId = epicId;
    }
 
+   public Subtask(String name, String description, int epicId, TaskStatus taskStatus, int newId) {
+      super(name, description, taskStatus, newId);
+      this.epicId = epicId;
+   }
 
+   public int getEpicId() {
+      return epicId;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      if (!super.equals(o)) return false;
+      Subtask subtask = (Subtask) o;
+      return epicId == subtask.epicId;
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(super.hashCode(), epicId);
+   }
+
+   @Override
+   public String toString() {
+      return "Subtask{name='" + getName() + "', " +
+              "epicId=" + epicId +
+              '}';
+   }
 }

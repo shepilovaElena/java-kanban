@@ -1,4 +1,4 @@
-import java.util.HashMap;
+
 import java.util.Objects;
 
 public class Task {
@@ -8,12 +8,17 @@ public class Task {
     private int id;
 
 
-    public Task(String name, String description) {
-        this.taskStatus = TaskStatus.NEW;
+    public Task(String name, String description, TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
         this.name = name;
         this.description = description;
-        this.id = 0;
+    }
 
+    public Task(String name, String description, TaskStatus taskStatus, int id){
+        this.taskStatus = taskStatus;
+        this.name = name;
+        this.description = description;
+        this.id = id;
     }
 
 
@@ -48,6 +53,9 @@ public class Task {
     public void setId(int id) {
         this.id = id;
     }
+
+
+
 
     @Override
     public boolean equals(Object o) {

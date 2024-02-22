@@ -5,42 +5,47 @@ public class Main {
 
 
     public static void main(String[] args) {
-        HashMap<Integer, Task> tasks = new HashMap<>();
-        HashMap<Integer, Epic> epics = new HashMap<>();
 
-        Task firstTask = new Task("палучить посылку", " ");
-        Task secondTask = new Task("приготовить обед", " ");
+        TaskManager taskManager = new TaskManager();
+
+        Task firstTask = new Task("палучить посылку", " ", TaskStatus.NEW);
+        taskManager.addNewTask(firstTask);
+        Task secondTask = new Task("приготовить обед", " ", TaskStatus.NEW);
+        taskManager.addNewTask(secondTask);
         Epic firstEpic = new Epic("дописать программу", " ");
-        Subtask oneOneSubtask = new Subtask("написать тест", " ");
+        taskManager.addNewEpic(firstEpic);
+        Subtask oneOneSubtask = new Subtask("написать тест", " ", firstEpic.getId(),
+                                            TaskStatus.IN_PROGRESS);
+        taskManager.addNewSubtask(firstEpic, oneOneSubtask);
         Epic secondEpic = new Epic("прочитать книгу", " ");
-        Subtask twoOneSubtask = new Subtask("прочитать главу 1", " ");
-        Subtask twoTwoSubtask = new Subtask("прочитать главу 2", " ");
+        taskManager.addNewEpic(secondEpic);
+        Subtask twoOneSubtask = new Subtask("прочитать главу 1", " ", secondEpic.getId(),
+                                            TaskStatus.IN_PROGRESS);
+        taskManager.addNewSubtask(secondEpic, twoOneSubtask);
+        Subtask twoTwoSubtask = new Subtask("прочитать главу 2", " ", secondEpic.getId(),
+                                            TaskStatus.IN_PROGRESS);
 
-     TaskManager.addNewTask(firstTask, tasks);
-     TaskManager.addNewTask(secondTask, tasks);
-     TaskManager.addNewEpic(firstEpic, epics);
-     TaskManager.addNewSubtask(firstEpic, oneOneSubtask);
-     TaskManager.addNewEpic(secondEpic, epics);
-     TaskManager.addNewSubtask(secondEpic, twoOneSubtask);
-     TaskManager.addNewSubtask(secondEpic, twoTwoSubtask);
+        System.out.println(taskManager.getAllTasks());
+        System.out.println(taskManager.getAllEpics());
+        System.out.println(taskManager.getAllSubtasks());
 
-     TaskManager.getAllTasks(tasks, epics);
 
-     TaskManager.changeTaskStatus(firstTask, TaskStatus.DONE);
-     System.out.println(firstTask.getTaskStatus());
-     TaskManager.changeSubtaskStatus(oneOneSubtask, TaskStatus.DONE, firstEpic);
-     System.out.println(firstEpic.getTaskStatus());
-     TaskManager.changeSubtaskStatus(twoOneSubtask, TaskStatus.DONE, secondEpic);
-     System.out.println(secondEpic.getTaskStatus());
+        System.out.println(oneOneSubtask.getId());
+        System.out.println(firstEpic.getId());
 
-     System.out.println(oneOneSubtask.getId());
-     System.out.println(firstEpic.getId());
+        System.out.println(taskManager.getSubtaskById(4).getName());
 
-     System.out.println(TaskManager.getSubtaskById(4, epics).getName());
-     System.out.println(TaskManager.getSubtasksOfEpic(secondEpic).toString());
+        Task taskForUpdate = new Task("получить посылку", " ", TaskStatus.DONE, firstTask.getId());
+        taskManager.updateTask(taskForUpdate);
+        System.out.println(taskManager.tasks.get(firstTask.getId()).getTaskStatus());
 
-     TaskManager.deleteById(2, tasks, epics);
-     TaskManager.getAllTasks(tasks, epics);
+        Subtask subtaskForUpdate = new Subtask("прочитать главу 1", " ", secondEpic.getId(),
+                                               TaskStatus.DONE, twoTwoSubtask.getId());
+        taskManager.updateSubtask(subtaskForUpdate);
+        System.out.println(secondEpic.getTaskStatus());
+
+        taskManager.deleteById(2);
+        System.out.println(taskManager.getAllTasks());
 
 
     }
