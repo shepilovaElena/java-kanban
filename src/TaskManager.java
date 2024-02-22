@@ -128,8 +128,8 @@ public class TaskManager {
         return;
         }
         for (Epic epic : epics.values()){
-                if(epic.getEpicSubtasks().contains(getTaskById(id))){
-                    epic.getEpicSubtasks().remove(getTaskById(id));
+                if(epic.getEpicSubtasks().contains(id)){
+                    epic.getEpicSubtasks().remove(id);
                     epic.deleteSubtask(id);
                 return;
             }
