@@ -41,7 +41,7 @@ public class Main {
         System.out.println(oneOneSubtask.getId());
         System.out.println(firstEpic.getId());
 
-        System.out.println(taskManager.getSubtaskById(4).getName());
+        System.out.println(taskManager.getSubtaskById(twoTwoSubtask.getId()).getName());
 
         Task taskForUpdate = new Task("получить посылку", " ", TaskStatus.DONE, firstTask.getId());
         taskManager.updateTask(taskForUpdate);
