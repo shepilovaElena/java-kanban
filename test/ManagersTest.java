@@ -1,11 +1,7 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ManagersTest {
     private static Managers manager;
