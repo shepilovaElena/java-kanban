@@ -5,9 +5,7 @@ import Model.Subtask;
 import Model.Task;
 import Model.TaskStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager  {
     private int id = 0;
@@ -21,9 +19,8 @@ public class InMemoryTaskManager implements TaskManager  {
 
 
     @Override
-    public HistoryManager getHistoryManager() {
-
-        return historyManager;
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
     @Override

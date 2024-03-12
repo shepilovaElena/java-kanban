@@ -14,7 +14,7 @@ public interface TaskManager<K extends Task> {
 
     Map<Integer, Subtask> getSubtasks();
 
-    HistoryManager getHistoryManager();
+    List<Task> getHistory();
 
     // добавление новых задач
     int addNewTask(Task newTask);

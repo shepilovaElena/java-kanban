@@ -26,13 +26,13 @@ class InMemoryHistoryTaskManagerTest {
     private static Subtask towTowSubtask;
     private static TaskManager taskManager;
 
-    private static HistoryManager historyManager;
+
 
     @BeforeAll
     public static void beforeAll() {
         manager = new Managers();
         taskManager = manager.getDefault();
-        historyManager = manager.getDefaultHistory();
+
 
         firstTask = new Task("купить яблок", " ", TaskStatus.NEW);
         taskManager.addNewTask(firstTask);
@@ -55,7 +55,7 @@ class InMemoryHistoryTaskManagerTest {
         void getHistoryTest() {
         taskManager.getTaskById(firstTask.getId());
         taskManager.getEpicById(firstEpic.getId());
-        List<Task> history = taskManager.getHistoryManager().getHistory();
+        List<Task> history = taskManager.getHistory();
         List<Task> history1 = new ArrayList<>();
         history1.add(firstTask);
         history1.add(firstEpic);
@@ -64,7 +64,4 @@ class InMemoryHistoryTaskManagerTest {
         Assertions.assertEquals(history1, history);
     }
 
-    @Test
-    void add() {
-    }
 }
