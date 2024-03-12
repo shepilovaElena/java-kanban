@@ -1,4 +1,4 @@
-package Magager;
+package Manager;
 
 import Model.Epic;
 import Model.Subtask;

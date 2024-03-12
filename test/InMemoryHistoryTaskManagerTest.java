@@ -1,6 +1,5 @@
-import Magager.HistoryManager;
-import Magager.Managers;
-import Magager.TaskManager;
+import Manager.Managers;
+import Manager.TaskManager;
 import Model.Epic;
 import Model.Subtask;
 import Model.Task;
