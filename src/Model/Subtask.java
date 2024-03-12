@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -36,7 +38,7 @@ public class Subtask extends Task {
 
    @Override
    public String toString() {
-      return "Subtask{name='" + getName() + "', " +
+      return "Model.Subtask{name='" + getName() + "', " +
               "epicId=" + epicId +
               '}';
    }

@@ -1,7 +1,9 @@
+package Magager;
+
 public class Managers  {
 
     public  TaskManager getDefault(){
-        return new InMemoryTaskManager(getDefaultHistory());
+        return new InMemoryTaskManager();
     }
 
     public  HistoryManager getDefaultHistory() {

@@ -1,3 +1,9 @@
+import Magager.Managers;
+import Magager.TaskManager;
+import Model.Epic;
+import Model.Subtask;
+import Model.Task;
+import Model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

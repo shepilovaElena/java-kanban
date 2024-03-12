@@ -1,12 +1,20 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+package Magager;
+
+import Model.Epic;
+import Model.Subtask;
+import Model.Task;
+
+import java.util.List;
+import java.util.Map;
 
 public interface TaskManager<K extends Task> {
-    HashMap<Integer, Task> getTasks();
+    Map<Integer, Task> getTasks();
 
-    HashMap<Integer, Epic> getEpics();
+    Map<Integer, Epic> getEpics();
 
-    HashMap<Integer, Subtask> getSubtasks();
+    Map<Integer, Subtask> getSubtasks();
+
+    HistoryManager getHistoryManager();
 
     // добавление новых задач
     int addNewTask(Task newTask);
@@ -30,14 +38,14 @@ public interface TaskManager<K extends Task> {
     Subtask getSubtaskById(int id);
 
     // получение списка задач определенного эпика
-    ArrayList<Subtask> getSubtasksOfEpic(int epicId);
+    List<Subtask> getSubtasksOfEpic(int epicId);
 
     // получение списка всех задач
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    ArrayList<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-    ArrayList<Subtask> getAllSubtasks();
+    List<Subtask> getAllSubtasks();
 
     void deleteTaskById(int id);
 
