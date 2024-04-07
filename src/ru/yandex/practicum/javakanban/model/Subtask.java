@@ -1,4 +1,4 @@
-package Model;
+package ru.yandex.practicum.javakanban.model;
 
 import java.util.Objects;
 
@@ -7,12 +7,12 @@ public class Subtask extends Task {
    private int epicId;
 
 
-   public Subtask(String name, String description, int epicId, TaskStatus taskStatus){
+   public Subtask(String name, String description, int epicId, TaskStatus taskStatus) {
           super(name, description, taskStatus);
           this.epicId = epicId;
    }
 
-   public Subtask(String name, String description, int epicId, TaskStatus taskStatus, int id){
+   public Subtask(String name, String description, int epicId, TaskStatus taskStatus, int id) {
       super(name, description, taskStatus, id);
       this.epicId = epicId;
    }
@@ -38,7 +38,7 @@ public class Subtask extends Task {
 
    @Override
    public String toString() {
-      return "Model.Subtask{name='" + getName() + "', " +
+      return "ru.yandex.practicum.javakanban.model.Subtask{name='" + getName() + "', " +
               "epicId=" + epicId +
               '}';
    }
