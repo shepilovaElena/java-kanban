@@ -35,34 +35,41 @@ public class InMemoryHistoryTaskManager implements HistoryManager {
             tail = new Node<>(task);
             head.next = tail;
             tail.prev = head;
+            tail.next = null;
             history.put(task.getId(), tail);
 
         } else if (!(history.containsKey(task.getId()))) {
             newView = new Node<>(task);
-            Node<Task> duplicate = tail;
+            Node<Task> duplicateNode = tail;
             tail = newView;
-            duplicate.next = tail;
-            tail.prev = duplicate;
+            duplicateNode.next = tail;
+            tail.prev = duplicateNode;
             history.put(task.getId(), tail);
 
         } else {
             removeNode(history.get(task.getId()));
             Node<Task> node = history.get(task.getId());
             Node<Task> duplicateNode = tail;
-            node.prev = duplicateNode;
             duplicateNode.next = node;
-            history.put(task.getId(), node);
+            node.prev = duplicateNode;
             tail = node;
+
         }
     }
 
     @Override
     public void removeNode(Node<Task> node) {
-        if (node.prev == null) {
+        if (node == head) {
             node.next.prev = null;
             head = node.next;
             node.next = null;
-        } else if (node.next != null) {
+            history.put(head.data.getId(), head);
+        } else if (node == tail) {
+            node.prev.next = null;
+            tail = node.prev;
+            node.prev = null;
+            history.put(node.data.getId(), tail);
+        } else {
             node.next.prev = node.prev;
             node.prev.next = node.next;
             node.next = null;
