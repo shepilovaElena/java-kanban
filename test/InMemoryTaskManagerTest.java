@@ -23,28 +23,46 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    void addNewTaskTest() {
+    void addNewTaskTestNotNull() {
         taskManager.addNewTask(firstTask);
         Assertions.assertNotNull(taskManager.getTaskById(firstTask.getId()));
+    }
+
+    @Test
+    void addNewTaskTestEquals() {
+        taskManager.addNewTask(firstTask);
         Assertions.assertEquals(taskManager.getTaskById(firstTask.getId()), firstTask);
     }
 
     @Test
-    void addNewEpicTest() {
+    void addNewEpicTestNotNull() {
         taskManager.addNewEpic(secondEpic);
         Assertions.assertNotNull(taskManager.getEpicById(secondEpic.getId()));
+    }
+
+    @Test
+    void addNewEpicTestEquals() {
+        taskManager.addNewEpic(secondEpic);
+        taskManager.addNewEpic(firstEpic);
+        taskManager.addNewTask(secondTask);
         Assertions.assertEquals(taskManager.getEpicById(secondEpic.getId()), secondEpic);
     }
 
 
     @Test
-    void addNewSubtaskTest() {
+    void addNewSubtaskTestNotNull() {
         taskManager.addNewEpic(firstEpic);
         oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
         taskManager.addNewSubtask(oneOneSubtask);
         Assertions.assertNotNull(taskManager.getSubtaskById(oneOneSubtask.getId()));
-        Assertions.assertEquals(taskManager.getSubtaskById(oneOneSubtask.getId()).getName(), "начать");
+    }
 
+    @Test
+    void addNewSubtaskTestEquals() {
+        taskManager.addNewEpic(firstEpic);
+        oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
+        taskManager.addNewSubtask(oneOneSubtask);
+        Assertions.assertEquals(taskManager.getSubtaskById(oneOneSubtask.getId()).getName(), "начать");
     }
 
     @Test
@@ -110,6 +128,5 @@ class InMemoryTaskManagerTest {
         towTowSubtask = new Subtask(" ", " ", secondEpic.getId(), TaskStatus.IN_PROGRESS);
         taskManager.addNewSubtask(towTowSubtask);
         Assertions.assertEquals(taskManager.getSubtaskById(towTowSubtask.getId()).getTaskStatus(), TaskStatus.IN_PROGRESS);
-
     }
 }

@@ -59,11 +59,12 @@ class InMemoryHistoryTaskManagerTest {
         taskManager.getTaskById(firstTask.getId());
         taskManager.getEpicById(firstEpic.getId());
         taskManager.getTaskById(secondTask.getId());
+        taskManager.getTaskById(firstTask.getId());
         List<Task> publicHistory = taskManager.getHistory();
         List<Task> history1 = new ArrayList<>();
-        history1.add(firstTask);
         history1.add(firstEpic);
         history1.add(secondTask);
+        history1.add(firstTask);
         Assertions.assertNotNull(publicHistory);
         Assertions.assertNotNull(history1);
         Assertions.assertEquals(history1, publicHistory);
