@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
 import ru.yandex.practicum.javakanban.model.Epic;
@@ -10,17 +11,28 @@ import org.junit.jupiter.api.Test;
 
 class InMemoryTaskManagerTest {
 
-    private static Task firstTask = new Task("купить яблок", " ", TaskStatus.NEW);
-    private static Task secondTask = new Task("", " ", TaskStatus.NEW);
-    private static Epic firstEpic = new Epic("написать текст", " ");
+    private static Task firstTask;
+    private static Task secondTask;
+    private static Epic firstEpic;
     private static Subtask oneOneSubtask;
-    private static Epic secondEpic = new Epic(" ", " ");
+    private static Epic secondEpic;
     private static Subtask towOneSubtask;
     private static Subtask towTowSubtask;
-    private Managers manager = new Managers();
-    private TaskManager taskManager = manager.getDefault();
+    private Managers manager;
+    private TaskManager taskManager;
 
+    @BeforeEach
+    public void BeforeEach() {
+        firstTask = new Task("купить яблок", " ", TaskStatus.NEW);
+        secondTask = new Task("", " ", TaskStatus.NEW);
+        firstEpic = new Epic("написать текст", " ");
+        secondEpic = new Epic(" ", " ");
+        towOneSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
+        towTowSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
 
+        manager = new Managers();
+        taskManager = manager.getDefault();
+    }
 
     @Test
     void addNewTaskTestNotNull() {
@@ -77,13 +89,11 @@ class InMemoryTaskManagerTest {
     void deleteAllEpicsTest() {
         taskManager.addNewEpic(firstEpic);
         taskManager.addNewEpic(secondEpic);
-        oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(oneOneSubtask);
         towOneSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(towOneSubtask);
         towTowSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
+        taskManager.addNewSubtask(oneOneSubtask);
+        taskManager.addNewSubtask(towOneSubtask);
         taskManager.addNewSubtask(towTowSubtask);
-
         taskManager.deleteAllEpics();
         Assertions.assertEquals(taskManager.getEpics().size(), 0);
         Assertions.assertEquals(taskManager.getSubtasks().size(), 0);
@@ -94,12 +104,12 @@ class InMemoryTaskManagerTest {
         taskManager.addNewTask(firstTask);
         taskManager.addNewTask(secondTask);
         taskManager.addNewEpic(firstEpic);
-        taskManager.addNewEpic(secondEpic);
         oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(oneOneSubtask);
+        taskManager.addNewEpic(secondEpic);
         towOneSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(towOneSubtask);
         towTowSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
+        taskManager.addNewSubtask(oneOneSubtask);
+        taskManager.addNewSubtask(towOneSubtask);
         taskManager.addNewSubtask(towTowSubtask);
 
         taskManager.deleteAllSubtasks();

@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import ru.yandex.practicum.javakanban.manager.HistoryManager;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
@@ -6,7 +7,6 @@ import ru.yandex.practicum.javakanban.model.Subtask;
 import ru.yandex.practicum.javakanban.model.Task;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ class InMemoryHistoryTaskManagerTest {
 
 
 
-    @BeforeAll
-    public static void beforeAll() {
+    @BeforeEach
+    public void beforeEach() {
         manager = new Managers();
         taskManager = manager.getDefault();
         historyManager = manager.getDefaultHistory();
