@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
+import ru.yandex.practicum.javakanban.manager.HistoryManager;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
 import ru.yandex.practicum.javakanban.model.Epic;
@@ -7,6 +8,9 @@ import ru.yandex.practicum.javakanban.model.Task;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 class InMemoryTaskManagerTest {
@@ -20,6 +24,7 @@ class InMemoryTaskManagerTest {
     private static Subtask towTowSubtask;
     private Managers manager;
     private TaskManager taskManager;
+    private HistoryManager historyManager;
 
     @BeforeEach
     public void BeforeEach() {
@@ -32,6 +37,7 @@ class InMemoryTaskManagerTest {
 
         manager = new Managers();
         taskManager = manager.getDefault();
+        historyManager = manager.getDefaultHistory();
     }
 
     @Test
@@ -81,8 +87,12 @@ class InMemoryTaskManagerTest {
     void deleteAllTasksTest() {
         taskManager.addNewTask(firstTask);
         taskManager.addNewTask(secondTask);
+
         taskManager.deleteAllTasks();
-        Assertions.assertEquals(taskManager.getTasks().size(), 0);
+
+        List<Task> publicHistory = taskManager.getHistory();
+        Assertions.assertEquals(0, publicHistory.size());
+        Assertions.assertEquals(0, taskManager.getTasks().size());
     }
 
     @Test
@@ -91,12 +101,20 @@ class InMemoryTaskManagerTest {
         taskManager.addNewEpic(secondEpic);
         towOneSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
         towTowSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
+        oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
         taskManager.addNewSubtask(oneOneSubtask);
         taskManager.addNewSubtask(towOneSubtask);
         taskManager.addNewSubtask(towTowSubtask);
+        taskManager.getEpicById(firstEpic.getId());
+        taskManager.getEpicById(secondEpic.getId());
+
         taskManager.deleteAllEpics();
-        Assertions.assertEquals(taskManager.getEpics().size(), 0);
-        Assertions.assertEquals(taskManager.getSubtasks().size(), 0);
+
+        List<Task> publicHistory = taskManager.getHistory();
+
+        Assertions.assertEquals(0, taskManager.getEpics().size());
+        Assertions.assertEquals(0, taskManager.getSubtasks().size());
+        Assertions.assertEquals(0, publicHistory.size());
     }
 
     @Test
@@ -111,10 +129,22 @@ class InMemoryTaskManagerTest {
         taskManager.addNewSubtask(oneOneSubtask);
         taskManager.addNewSubtask(towOneSubtask);
         taskManager.addNewSubtask(towTowSubtask);
+        taskManager.getTaskById(firstTask.getId());
+        taskManager.getTaskById(secondTask.getId());
+        taskManager.getEpicById(firstEpic.getId());
+        taskManager.getSubtaskById(oneOneSubtask.getId());
 
         taskManager.deleteAllSubtasks();
-        Assertions.assertEquals(taskManager.getSubtasks().size(), 0);
-        Assertions.assertEquals(taskManager.getAllSubtasks().size(), 0);
+
+        List<Task> publicHistory = taskManager.getHistory();
+        List<Task> checkHistory = new ArrayList<>();
+        checkHistory.add(firstTask);
+        checkHistory.add(secondTask);
+        checkHistory.add(firstEpic);
+
+        Assertions.assertEquals(0, taskManager.getSubtasks().size());
+        Assertions.assertEquals(0, taskManager.getAllSubtasks().size());
+        Assertions.assertEquals(checkHistory, publicHistory);
     }
 
     @Test

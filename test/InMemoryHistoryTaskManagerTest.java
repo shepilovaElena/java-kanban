@@ -101,4 +101,23 @@ class InMemoryHistoryTaskManagerTest {
         Assertions.assertNotNull(history2);
         Assertions.assertEquals(history2, publicHistory);
     }
+
+    @Test
+    void removeTaskFromHistoryTest() {
+        taskManager.getTaskById(firstTask.getId());
+        taskManager.getEpicById(firstEpic.getId());
+        taskManager.getTaskById(secondTask.getId());
+        taskManager.getEpicById(secondEpic.getId());
+        taskManager.deleteEpicById(secondEpic.getId());
+        taskManager.deleteTaskById(firstTask.getId());
+        taskManager.getSubtaskById(towOneSubtask.getId());
+        taskManager.deleteSubtaskById(towOneSubtask.getId());
+        List<Task> publicHistory = taskManager.getHistory();
+        List<Task> history2 = new ArrayList<>();
+        history2.add(firstEpic);
+        history2.add(secondTask);
+        Assertions.assertNotNull(publicHistory);
+        Assertions.assertNotNull(history2);
+        Assertions.assertEquals(history2, publicHistory);
+    }
 }

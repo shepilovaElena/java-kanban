@@ -11,4 +11,6 @@ public interface HistoryManager {
    void addTaskInHistory(Task task);
 
    void removeNode(Node<Task> node);
+
+   void removeTaskFromHistory(int id);
 }
