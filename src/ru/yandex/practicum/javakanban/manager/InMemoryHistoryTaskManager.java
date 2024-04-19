@@ -26,10 +26,10 @@ public class InMemoryHistoryTaskManager implements HistoryManager {
         return publicHistory;
     }
 
-    @Override
-    public void removeNode(Node<Task> node) {
+
+    private void removeNode(Node<Task> node) {
         if (history.size() == 1) {
-            node.next = null;
+            head = null;
         } else if (history.size() > 1) {
             if (node == head) {
                 node.next.prev = null;
