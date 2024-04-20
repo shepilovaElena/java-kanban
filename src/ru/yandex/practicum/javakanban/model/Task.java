@@ -1,4 +1,4 @@
-package Model;
+package ru.yandex.practicum.javakanban.model;
 
 import java.util.Objects;
 
@@ -15,14 +15,14 @@ public class Task {
         this.description = description;
     }
 
-    public Task(String name, String description, TaskStatus taskStatus, int id){
+    public Task(String name, String description, TaskStatus taskStatus, int id) {
         this.taskStatus = taskStatus;
         this.name = name;
         this.description = description;
         this.id = id;
     }
 
-    public Task(String name, String description, int id){
+    public Task(String name, String description, int id) {
         this.name = name;
         this.description = description;
         this.id = id;
@@ -78,7 +78,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Model.Task{" +
+        return "ru.yandex.practicum.javakanban.model.Task{" +
                 "name='" + name + '\'' +
                 '}';
     }

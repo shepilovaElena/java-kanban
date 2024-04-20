@@ -1,8 +1,8 @@
-package Manager;
+package ru.yandex.practicum.javakanban.manager;
 
-import Model.Epic;
-import Model.Subtask;
-import Model.Task;
+import ru.yandex.practicum.javakanban.model.Epic;
+import ru.yandex.practicum.javakanban.model.Subtask;
+import ru.yandex.practicum.javakanban.model.Task;
 
 import java.util.List;
 import java.util.Map;

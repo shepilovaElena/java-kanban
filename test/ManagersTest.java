@@ -1,10 +1,10 @@
-import Manager.HistoryManager;
-import Manager.Managers;
-import Manager.TaskManager;
-import Model.Epic;
-import Model.Subtask;
-import Model.Task;
-import Model.TaskStatus;
+import ru.yandex.practicum.javakanban.manager.HistoryManager;
+import ru.yandex.practicum.javakanban.manager.Managers;
+import ru.yandex.practicum.javakanban.manager.TaskManager;
+import ru.yandex.practicum.javakanban.model.Epic;
+import ru.yandex.practicum.javakanban.model.Subtask;
+import ru.yandex.practicum.javakanban.model.Task;
+import ru.yandex.practicum.javakanban.model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

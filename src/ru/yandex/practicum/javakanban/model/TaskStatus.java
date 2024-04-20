@@ -1,4 +1,4 @@
-package Model;
+package ru.yandex.practicum.javakanban.model;
 
 public enum TaskStatus {
     NEW,
