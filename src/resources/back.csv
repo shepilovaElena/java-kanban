@@ -1,0 +1,4 @@
+id,type,name,status,description,epic
+3,EPIC,написать текст,NEW,description3,
+5,EPIC,name,NEW,description5,
+4,SUBTASK,начать,NEW,description4,3

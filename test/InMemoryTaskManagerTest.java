@@ -9,6 +9,7 @@ import ru.yandex.practicum.javakanban.model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +42,13 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewTaskTestNotNull() {
+    void addNewTaskTestNotNull() throws IOException {
         taskManager.addNewTask(firstTask);
         Assertions.assertNotNull(taskManager.getTaskById(firstTask.getId()));
     }
 
     @Test
-    void addNewTaskTestEquals() {
+    void addNewTaskTestEquals() throws IOException {
         taskManager.addNewTask(firstTask);
         Assertions.assertEquals(taskManager.getTaskById(firstTask.getId()), firstTask);
     }
@@ -59,7 +60,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewEpicTestEquals() {
+    void addNewEpicTestEquals() throws IOException{
         taskManager.addNewEpic(secondEpic);
         taskManager.addNewEpic(firstEpic);
         taskManager.addNewTask(secondTask);
@@ -118,7 +119,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void deleteAllSubtasksTest() {
+    void deleteAllSubtasksTest() throws IOException{
         taskManager.addNewTask(firstTask);
         taskManager.addNewTask(secondTask);
         taskManager.addNewEpic(firstEpic);
@@ -148,7 +149,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void updateTaskTest() {
+    void updateTaskTest() throws IOException{
         taskManager.addNewTask(firstTask);
         taskManager.updateTask(new Task("купить яблок", "красных", TaskStatus.NEW, firstTask.getId()));
         Assertions.assertEquals(taskManager.getTaskById(firstTask.getId()).getDescription(), "красных");

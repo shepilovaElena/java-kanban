@@ -1,3 +1,4 @@
+import ru.yandex.practicum.javakanban.manager.ManagerSaveException;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
 import ru.yandex.practicum.javakanban.model.Epic;
@@ -5,10 +6,12 @@ import ru.yandex.practicum.javakanban.model.Subtask;
 import ru.yandex.practicum.javakanban.model.Task;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
 
+import java.io.IOException;
+
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ManagerSaveException {
 
         Managers manager = new Managers();
         TaskManager taskManager = manager.getDefault();

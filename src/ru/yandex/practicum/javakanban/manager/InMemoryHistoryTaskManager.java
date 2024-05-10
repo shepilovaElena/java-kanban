@@ -6,9 +6,9 @@ import java.util.*;
 
 public class InMemoryHistoryTaskManager implements HistoryManager {
 
-    Map<Integer, Node<Task>> history = new HashMap<>();
-    Node<Task> head;
-    Node<Task> tail;
+    protected Map<Integer, Node<Task>> history = new HashMap<>();
+    protected Node<Task> head;
+    protected Node<Task> tail;
 
 
 
@@ -16,12 +16,14 @@ public class InMemoryHistoryTaskManager implements HistoryManager {
     public List<Task> getHistory() {
         List<Task> publicHistory = new ArrayList<>();
         Node<Task> node = head;
-        if (history.size() != 0) {
+        if (history.size() > 1) {
             while (node.next != null) {
                 publicHistory.add(node.data);
                 node = node.next;
             }
             publicHistory.add(tail.data);
+        } else if (history.size() == 1) {
+            publicHistory.add(node.data);
         }
         return publicHistory;
     }
@@ -61,7 +63,7 @@ public class InMemoryHistoryTaskManager implements HistoryManager {
             duplicateNode.next = tail;
             tail.prev = duplicateNode;
             history.put(task.getId(), tail);
-        } else {
+        } else if (history.size() > 1 && history.containsKey(task.getId())) {
             Node<Task> node = history.get(task.getId());
             removeNode(history.get(task.getId()));
             Node<Task> duplicatNode = tail;
