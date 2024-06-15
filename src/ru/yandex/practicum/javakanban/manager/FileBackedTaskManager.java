@@ -185,7 +185,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         int maxId = 0;
         for (int i = 1; i < lines.size(); i++) {
             int currentId = Integer.valueOf(lines.get(i).split(",")[0]);
-            if(maxId < currentId) {
+            if (maxId < currentId) {
                 maxId = currentId;
             }
             setId(maxId);
@@ -209,14 +209,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         for (int i = 0; i < historyId.length; i++) {
             if (tasks.containsKey(historyId[i])) {
                 historyManager.addTaskInHistory(tasks.get(historyId[i]));
-            } if (epics.containsKey(historyId[i])) {
+            }
+            if (epics.containsKey(historyId[i])) {
                 historyManager.addTaskInHistory(epics.get(historyId[i]));
-            } if (subtasks.containsKey(historyId[i])) {
+            }
+            if (subtasks.containsKey(historyId[i])) {
                 historyManager.addTaskInHistory(subtasks.get(historyId[i]));
             }
         }
-
     }
+
     public static FileBackedTaskManager loadFromFile(Path file, Path fileToHistory) throws IOException {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file, fileToHistory);
         fileBackedTaskManager.loadFromFile();
