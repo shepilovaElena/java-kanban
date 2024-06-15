@@ -37,6 +37,10 @@ public class InMemoryTaskManager implements TaskManager {
         return subtasks;
     }
 
+    public void setId(int newId) {
+        id = newId;
+    }
+
     // генерация id
     private int generateId() {
         id++;

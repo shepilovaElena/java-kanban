@@ -1,18 +1,45 @@
 package ru.yandex.practicum.javakanban.model;
 
+import ru.yandex.practicum.javakanban.manager.TypeOfTask;
+
 import java.util.Objects;
 
 public class Task {
     private String name;
     private String description;
     private TaskStatus taskStatus;
+
+    private TypeOfTask typeOfTask = TypeOfTask.TASK;
     private int id;
 
 
-    public Task(String name, String description, TaskStatus taskStatus) {
+    public Task(String name, String description, TaskStatus taskStatus, TypeOfTask typeOfTask) {
         this.taskStatus = taskStatus;
         this.name = name;
         this.description = description;
+        this.typeOfTask = typeOfTask;
+    }
+
+    public Task(String name, String description, TaskStatus taskStatus, int id, TypeOfTask typeOfTask) {
+        this.taskStatus = taskStatus;
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.typeOfTask = typeOfTask;
+    }
+
+    public Task(String name, String description, int id, TypeOfTask typeOfTask) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.typeOfTask = typeOfTask;
+    }
+
+    public Task(String name, String description, TaskStatus taskStatus) {
+        this.name = name;
+        this.description = description;
+        this.typeOfTask = TypeOfTask.TASK;
+        this.taskStatus = taskStatus;
     }
 
     public Task(String name, String description, TaskStatus taskStatus, int id) {
@@ -20,13 +47,19 @@ public class Task {
         this.name = name;
         this.description = description;
         this.id = id;
+        this.typeOfTask = TypeOfTask.TASK;
     }
 
     public Task(String name, String description, int id) {
         this.name = name;
         this.description = description;
         this.id = id;
+        this.typeOfTask = TypeOfTask.TASK;
     }
+
+
+
+
 
     public String getName() {
         return name;
@@ -42,6 +75,10 @@ public class Task {
 
     public int getId() {
         return id;
+    }
+
+    public TypeOfTask getTypeOfTask() {
+        return typeOfTask;
     }
 
     public void setName(String name) {
@@ -82,4 +119,9 @@ public class Task {
                 "name='" + name + '\'' +
                 '}';
     }
-}
+
+    public String taskToString() {
+        return id + "," + typeOfTask + "," + name + "," + taskStatus + "," + description + ",";
+    }
+
+   }

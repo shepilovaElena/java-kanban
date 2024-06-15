@@ -1,5 +1,7 @@
 package ru.yandex.practicum.javakanban.model;
 
+import ru.yandex.practicum.javakanban.manager.TypeOfTask;
+
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -8,12 +10,12 @@ public class Subtask extends Task {
 
 
    public Subtask(String name, String description, int epicId, TaskStatus taskStatus) {
-          super(name, description, taskStatus);
+          super(name, description, taskStatus, TypeOfTask.SUBTASK);
           this.epicId = epicId;
    }
 
    public Subtask(String name, String description, int epicId, TaskStatus taskStatus, int id) {
-      super(name, description, taskStatus, id);
+      super(name, description, taskStatus, id, TypeOfTask.SUBTASK);
       this.epicId = epicId;
    }
 
@@ -42,4 +44,10 @@ public class Subtask extends Task {
               "epicId=" + epicId +
               '}';
    }
+
+   @Override
+   public String taskToString() {
+      return super.taskToString() + epicId;
+   }
+
 }

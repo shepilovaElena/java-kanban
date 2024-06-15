@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
+public class FileBackedTaskManager extends InMemoryTaskManager {
     private Path file;
     private Path fileToHistory;
 
@@ -133,17 +133,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         try {
             if (!tasks.isEmpty()) {
                 for (Task task : tasks.values()) {
-                    lines.add(taskToString(task));
+                    lines.add(task.taskToString());
                 }
             }
             if (!epics.isEmpty()) {
                 for (Epic epic : epics.values()) {
-                    lines.add(epicToString(epic));
+                    lines.add(epic.taskToString());
                 }
             }
             if (!subtasks.isEmpty()) {
                 for (Subtask subtask : subtasks.values()) {
-                    lines.add(subtaskToString(subtask));
+                    lines.add(subtask.taskToString());
                 }
             }
             FileWriter writer = new FileWriter(file.toFile(), StandardCharsets.UTF_8);
@@ -182,9 +182,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             lines.add(line);
         }
         br.close();
-
+        int maxId = 0;
         for (int i = 1; i < lines.size(); i++) {
+            int currentId = Integer.valueOf(lines.get(i).split(",")[0]);
+            if(maxId < currentId) {
+                maxId = currentId;
+            }
+            setId(maxId);
             fromString(lines.get(i));
+        }
+        for (Subtask subtask : subtasks.values()) {
+           int epicId = subtask.getEpicId();
+           epics.get(epicId).getEpicSubtasks().add(subtask.getId());
         }
     }
 
@@ -198,25 +207,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
         br.close();
         for (int i = 0; i < historyId.length; i++) {
-            if (tasks.containsKey(historyId[i]) || epics.containsKey(historyId[i]) || subtasks.containsKey(historyId[i])) {
+            if (tasks.containsKey(historyId[i])) {
                 historyManager.addTaskInHistory(tasks.get(historyId[i]));
+            } if (epics.containsKey(historyId[i])) {
+                historyManager.addTaskInHistory(epics.get(historyId[i]));
+            } if (subtasks.containsKey(historyId[i])) {
+                historyManager.addTaskInHistory(subtasks.get(historyId[i]));
             }
         }
-    }
 
-    private String taskToString(Task task) {
-        String strTask = task.getId() + "," + TypeOfTask.TASK + "," + task.getName() + "," + task.getTaskStatus() + "," + task.getDescription() + ",";
-        return strTask;
     }
-
-    private String epicToString(Epic epic) {
-        String strEpic = epic.getId() + "," + TypeOfTask.EPIC + "," + epic.getName() + "," + epic.getTaskStatus() + "," + epic.getDescription() + ",";
-        return strEpic;
-    }
-
-    private String subtaskToString(Subtask subtask) {
-        String strSubtask = subtask.getId() + "," + TypeOfTask.SUBTASK + "," + subtask.getName() + "," + subtask.getTaskStatus() + "," + subtask.getDescription() + "," + subtask.getEpicId();
-        return strSubtask;
+    public static FileBackedTaskManager loadFromFile(Path file, Path fileToHistory) throws IOException {
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file, fileToHistory);
+        fileBackedTaskManager.loadFromFile();
+        fileBackedTaskManager.loadFromFileHistory();
+        return fileBackedTaskManager;
     }
 
     private void fromString(String value) {
@@ -225,55 +230,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
         switch (valueOfTasks[1]) {
             case "Task":
-                switch (valueOfTasks[3]) {
-                    case "NEW":
-                        el = new Task(valueOfTasks[2], valueOfTasks[4], TaskStatus.NEW, Integer.parseInt(valueOfTasks[0]));
+                el = new Task(valueOfTasks[2], valueOfTasks[4], TaskStatus.valueOf(valueOfTasks[3]), Integer.parseInt(valueOfTasks[0]));
                         tasks.put(Integer.parseInt(valueOfTasks[0]), el);
-                        break;
-                    case "IN_PROGRESS":
-                        el = new Task(valueOfTasks[2], valueOfTasks[4], TaskStatus.IN_PROGRESS, Integer.parseInt(valueOfTasks[0]));
-                        tasks.put(Integer.parseInt(valueOfTasks[0]), el);
-                        break;
-                    case "DONE":
-                        el = new Task(valueOfTasks[2], valueOfTasks[4], TaskStatus.DONE, Integer.parseInt(valueOfTasks[0]));
-                        tasks.put(Integer.parseInt(valueOfTasks[0]), el);
-                        break;
-                }
-
             case "Epic":
                 el = new Epic(valueOfTasks[2], valueOfTasks[4], Integer.parseInt(valueOfTasks[0]));
-                switch (valueOfTasks[3]) {
-                    case "NEW":
-                        el.setTaskStatus(TaskStatus.NEW);
-                        epics.put(Integer.parseInt(valueOfTasks[0]), (Epic) el);
-                        break;
-                    case "IN_PROGRESS":
-                        el = new Task(valueOfTasks[2], valueOfTasks[4], TaskStatus.IN_PROGRESS, Integer.parseInt(valueOfTasks[0]));
-                        epics.put(Integer.parseInt(valueOfTasks[0]), (Epic) el);
-                        break;
-                    case "DONE":
-                        el = new Task(valueOfTasks[2], valueOfTasks[4], TaskStatus.DONE, Integer.parseInt(valueOfTasks[0]));
-                        epics.put(Integer.parseInt(valueOfTasks[0]), (Epic) el);
-                        break;
-                }
+                         el.setTaskStatus(TaskStatus.valueOf(valueOfTasks[3]));
+                         epics.put(Integer.parseInt(valueOfTasks[0]), (Epic) el);
             case "Subtask":
-                switch (valueOfTasks[3]) {
-                    case "NEW":
-                        el = new Subtask(valueOfTasks[2], valueOfTasks[4], Integer.parseInt(valueOfTasks[0]), TaskStatus.NEW,
-                                Integer.parseInt(valueOfTasks[5]));
-                        subtasks.put(Integer.parseInt(valueOfTasks[0]), (Subtask) el);
-                        break;
-                    case "IN_PROGRESS":
-                        el = new Subtask(valueOfTasks[2], valueOfTasks[4], Integer.parseInt(valueOfTasks[0]), TaskStatus.IN_PROGRESS,
-                                Integer.parseInt(valueOfTasks[5]));
-                        subtasks.put(Integer.parseInt(valueOfTasks[0]), (Subtask) el);
-                        break;
-                    case "DONE":
-                        el = new Subtask(valueOfTasks[2], valueOfTasks[4], Integer.parseInt(valueOfTasks[0]), TaskStatus.DONE,
-                                Integer.parseInt(valueOfTasks[5]));
-                        subtasks.put(Integer.parseInt(valueOfTasks[0]), (Subtask) el);
-                        break;
-                }
+                el = new Subtask(valueOfTasks[2], valueOfTasks[4], Integer.parseInt(valueOfTasks[0]), TaskStatus.valueOf(valueOfTasks[3]),
+                        Integer.parseInt(valueOfTasks[5]));
+                subtasks.put(Integer.parseInt(valueOfTasks[0]), (Subtask) el);
         }
     }
 
