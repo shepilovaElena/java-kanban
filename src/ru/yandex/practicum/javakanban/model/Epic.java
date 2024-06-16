@@ -32,9 +32,4 @@ public class Epic extends Task {
         return epicSubtasks;
     }
 
-    @Override
-    public String taskToString() {
-        return super.taskToString();
-    }
-
 }

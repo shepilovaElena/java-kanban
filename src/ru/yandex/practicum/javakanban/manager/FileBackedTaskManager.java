@@ -133,17 +133,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             if (!tasks.isEmpty()) {
                 for (Task task : tasks.values()) {
-                    lines.add(task.taskToString());
+                    lines.add(taskToString(task));
                 }
             }
             if (!epics.isEmpty()) {
                 for (Epic epic : epics.values()) {
-                    lines.add(epic.taskToString());
+                    lines.add(taskToString(epic));
                 }
             }
             if (!subtasks.isEmpty()) {
                 for (Subtask subtask : subtasks.values()) {
-                    lines.add(subtask.taskToString());
+                    lines.add(taskToString(subtask));
                 }
             }
             FileWriter writer = new FileWriter(file.toFile(), StandardCharsets.UTF_8);
@@ -172,6 +172,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
+    public String taskToString(Task task) {
+        String str = task.getId() + "," + task.getTypeOfTask() + "," + task.getName() + "," + task.getTaskStatus() + "," + task.getDescription() + ",";
+        if (task.getTypeOfTask().equals(TypeOfTask.SUBTASK)) {
+            Subtask subtask = (Subtask) task;
+            str = str + subtask.getEpicId();
+        }
+
+        return str;
+    }
+
     public void  loadFromFile() throws IOException {
         List<String> lines = new ArrayList<>();
         FileReader reader = new FileReader(file.toFile(), StandardCharsets.UTF_8);
@@ -188,12 +198,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             if (maxId < currentId) {
                 maxId = currentId;
             }
-            setId(maxId);
             fromString(lines.get(i));
         }
+        setId(maxId);
         for (Subtask subtask : subtasks.values()) {
            int epicId = subtask.getEpicId();
-           epics.get(epicId).getEpicSubtasks().add(subtask.getId());
+           Epic currentEpic = epics.get(epicId);
+           currentEpic.getEpicSubtasks().add(subtask.getId());
         }
     }
 
@@ -207,14 +218,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
         br.close();
         for (int i = 0; i < historyId.length; i++) {
-            if (tasks.containsKey(historyId[i])) {
-                historyManager.addTaskInHistory(tasks.get(historyId[i]));
+            int currentId = Integer.parseInt(historyId[i]);
+            if (tasks.containsKey(currentId)) {
+                historyManager.addTaskInHistory(tasks.get(currentId));
             }
-            if (epics.containsKey(historyId[i])) {
-                historyManager.addTaskInHistory(epics.get(historyId[i]));
+            if (epics.containsKey(currentId)) {
+                historyManager.addTaskInHistory(epics.get(currentId));
             }
-            if (subtasks.containsKey(historyId[i])) {
-                historyManager.addTaskInHistory(subtasks.get(historyId[i]));
+            if (subtasks.containsKey(currentId)) {
+                historyManager.addTaskInHistory(subtasks.get(currentId));
             }
         }
     }

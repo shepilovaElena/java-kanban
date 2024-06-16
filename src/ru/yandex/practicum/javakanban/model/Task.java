@@ -120,8 +120,5 @@ public class Task {
                 '}';
     }
 
-    public String taskToString() {
-        return id + "," + typeOfTask + "," + name + "," + taskStatus + "," + description + ",";
-    }
 
    }

@@ -45,9 +45,4 @@ public class Subtask extends Task {
               '}';
    }
 
-   @Override
-   public String taskToString() {
-      return super.taskToString() + epicId;
-   }
-
 }
