@@ -4,7 +4,6 @@ import ru.yandex.practicum.javakanban.model.Task;
 
 import java.util.List;
 
-
 public interface HistoryManager {
    List<Task> getHistory();
 

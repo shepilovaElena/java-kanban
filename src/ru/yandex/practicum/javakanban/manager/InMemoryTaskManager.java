@@ -4,17 +4,16 @@ import ru.yandex.practicum.javakanban.model.Epic;
 import ru.yandex.practicum.javakanban.model.Subtask;
 import ru.yandex.practicum.javakanban.model.Task;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
-
 import java.util.*;
 
-public class InMemoryTaskManager implements TaskManager  {
+public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
 
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
-    private Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected Map<Integer, Task> tasks = new HashMap<>();
+    protected Map<Integer, Epic> epics = new HashMap<>();
+    protected Map<Integer, Subtask> subtasks = new HashMap<>();
     private Managers manager = new Managers();
-    private HistoryManager historyManager = manager.getDefaultHistory();
+    protected HistoryManager historyManager = manager.getDefaultHistory();
 
 
 
@@ -25,19 +24,21 @@ public class InMemoryTaskManager implements TaskManager  {
 
     @Override
     public Map<Integer, Task> getTasks() {
-
         return tasks;
     }
 
     @Override
     public Map<Integer, Epic> getEpics() {
-
         return epics;
     }
 
     @Override
     public Map<Integer, Subtask> getSubtasks() {
         return subtasks;
+    }
+
+    public void setId(int newId) {
+        id = newId;
     }
 
     // генерация id
@@ -281,6 +282,4 @@ public class InMemoryTaskManager implements TaskManager  {
             epics.get(updateEpic.getId()).setDescription(updateEpic.getDescription());
         }
     }
-
-
 }
