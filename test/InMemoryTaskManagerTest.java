@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import ru.yandex.practicum.javakanban.manager.HistoryManager;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
+import ru.yandex.practicum.javakanban.manager.TypeOfTask;
 import ru.yandex.practicum.javakanban.model.Epic;
 import ru.yandex.practicum.javakanban.model.Subtask;
 import ru.yandex.practicum.javakanban.model.Task;
@@ -9,88 +10,95 @@ import ru.yandex.practicum.javakanban.model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
 
 class InMemoryTaskManagerTest {
 
-    private static Task firstTask;
-    private static Task secondTask;
-    private static Epic firstEpic;
-    private static Subtask oneOneSubtask;
-    private static Epic secondEpic;
-    private static Subtask towOneSubtask;
-    private static Subtask towTowSubtask;
+    private Task firstTask;
+    private Task secondTask;
+    private Epic firstEpic;
+    private Subtask oneOneSubtask;
+    private Epic secondEpic;
+    private Subtask oneTwoSubtask;
+    private Subtask twoTwoSubtask;
+    private Subtask threeTwoSubtask;
+    private Subtask fourTwoSubtask;
+    private Subtask fifthTwoSubtask;
+    private Subtask sixthTwoSubtask;
     private Managers manager;
+
     private TaskManager taskManager;
     private HistoryManager historyManager;
 
     @BeforeEach
-    public void BeforeEach() {
-        firstTask = new Task("купить яблок", " ", TaskStatus.NEW);
-        secondTask = new Task("", " ", TaskStatus.NEW);
-        firstEpic = new Epic("написать текст", " ");
-        secondEpic = new Epic(" ", " ");
-        towOneSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
-        towTowSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
+    public void BeforeEach(){
 
         manager = new Managers();
         taskManager = manager.getDefault();
         historyManager = manager.getDefaultHistory();
+        firstTask = new Task("купить яблок", "description1", TaskStatus.NEW, TypeOfTask.TASK, Duration.ofHours(1), LocalDateTime.of(2024, Month.SEPTEMBER, 15, 13, 0));
+        taskManager.addNewTask(firstTask);
+        secondTask = new Task("отвезти кошку к ветеринару", "description2", TaskStatus.NEW, TypeOfTask.TASK, Duration.ofHours(4), LocalDateTime.of(2024, Month.SEPTEMBER, 15, 8, 0));
+        taskManager.addNewTask(secondTask);
+        firstEpic = new Epic("написать текст", " ");
+        taskManager.addNewEpic(firstEpic);
+        secondEpic = new Epic(" ", " ");
+        taskManager.addNewEpic(secondEpic);
+        oneOneSubtask = new Subtask("начать", "description4", firstEpic.getId(), TaskStatus.NEW, Duration.ofHours(2), LocalDateTime.of(2024, Month.SEPTEMBER, 1, 9, 0));
+        taskManager.addNewSubtask(oneOneSubtask);
+        oneTwoSubtask = new Subtask(" ", "description3", secondEpic.getId(), TaskStatus.NEW, Duration.ofHours(2), LocalDateTime.of(2024, Month.SEPTEMBER, 2, 9, 0));
+        taskManager.addNewSubtask(oneTwoSubtask);
+        twoTwoSubtask = new Subtask(" ", "description3", secondEpic.getId(), TaskStatus.NEW, Duration.ofMinutes(75), LocalDateTime.of(2024, Month.SEPTEMBER, 2, 10, 45));
+        taskManager.addNewSubtask(twoTwoSubtask);
+        threeTwoSubtask = new Subtask(" ", "description3", secondEpic.getId(), TaskStatus.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, Month.SEPTEMBER, 3, 10, 0));
+        taskManager.addNewSubtask(threeTwoSubtask);
+        fourTwoSubtask = new Subtask(" ", "description5", secondEpic.getId(), TaskStatus.NEW, Duration.ofMinutes(40), LocalDateTime.of(2024, Month.SEPTEMBER, 3, 10, 0));
+        taskManager.addNewSubtask(fourTwoSubtask);
+        fifthTwoSubtask = new Subtask(" ", "description6", secondEpic.getId(), TaskStatus.NEW, Duration.ofMinutes(40), LocalDateTime.of(2024, Month.SEPTEMBER, 3, 10, 0));
+        taskManager.addNewSubtask(fifthTwoSubtask);
+        sixthTwoSubtask = new Subtask(" ", "description6", secondEpic.getId(), TaskStatus.NEW, Duration.ofMinutes(20), LocalDateTime.of(2024, Month.SEPTEMBER, 3, 10, 0));
+        taskManager.addNewSubtask(sixthTwoSubtask);
     }
 
     @Test
-    void addNewTaskTestNotNull() throws IOException {
-        taskManager.addNewTask(firstTask);
+    public void addNewTaskTestNotNull(){
         Assertions.assertNotNull(taskManager.getTaskById(firstTask.getId()));
     }
 
     @Test
-    void addNewTaskTestEquals() throws IOException {
-        taskManager.addNewTask(firstTask);
+    void addNewTaskTestEquals() {
         Assertions.assertEquals(taskManager.getTaskById(firstTask.getId()), firstTask);
     }
 
     @Test
     void addNewEpicTestNotNull() {
-        taskManager.addNewEpic(secondEpic);
         Assertions.assertNotNull(taskManager.getEpicById(secondEpic.getId()));
     }
 
     @Test
-    void addNewEpicTestEquals() throws IOException{
-        taskManager.addNewEpic(secondEpic);
-        taskManager.addNewEpic(firstEpic);
-        taskManager.addNewTask(secondTask);
+    void addNewEpicTestEquals(){
         Assertions.assertEquals(taskManager.getEpicById(secondEpic.getId()), secondEpic);
     }
 
 
     @Test
     void addNewSubtaskTestNotNull() {
-        taskManager.addNewEpic(firstEpic);
-        oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(oneOneSubtask);
         Assertions.assertNotNull(taskManager.getSubtaskById(oneOneSubtask.getId()));
     }
 
     @Test
     void addNewSubtaskTestEquals() {
-        taskManager.addNewEpic(firstEpic);
-        oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(oneOneSubtask);
         Assertions.assertEquals(taskManager.getSubtaskById(oneOneSubtask.getId()).getName(), "начать");
     }
 
     @Test
     void deleteAllTasksTest() {
-        taskManager.addNewTask(firstTask);
-        taskManager.addNewTask(secondTask);
-
         taskManager.deleteAllTasks();
-
         List<Task> publicHistory = taskManager.getHistory();
         Assertions.assertEquals(0, publicHistory.size());
         Assertions.assertEquals(0, taskManager.getTasks().size());
@@ -98,20 +106,11 @@ class InMemoryTaskManagerTest {
 
     @Test
     void deleteAllEpicsTest() {
-        taskManager.addNewEpic(firstEpic);
-        taskManager.addNewEpic(secondEpic);
-        towOneSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
-        towTowSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
-        oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(oneOneSubtask);
-        taskManager.addNewSubtask(towOneSubtask);
-        taskManager.addNewSubtask(towTowSubtask);
+        List<Task> publicHistory = taskManager.getHistory();
+
         taskManager.getEpicById(firstEpic.getId());
         taskManager.getEpicById(secondEpic.getId());
-
         taskManager.deleteAllEpics();
-
-        List<Task> publicHistory = taskManager.getHistory();
 
         Assertions.assertEquals(0, taskManager.getEpics().size());
         Assertions.assertEquals(0, taskManager.getSubtasks().size());
@@ -119,17 +118,8 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void deleteAllSubtasksTest() throws IOException{
-        taskManager.addNewTask(firstTask);
-        taskManager.addNewTask(secondTask);
-        taskManager.addNewEpic(firstEpic);
-        oneOneSubtask = new Subtask("начать", " ", firstEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewEpic(secondEpic);
-        towOneSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
-        towTowSubtask = new Subtask("", " ", secondEpic.getId(), TaskStatus.NEW);
-        taskManager.addNewSubtask(oneOneSubtask);
-        taskManager.addNewSubtask(towOneSubtask);
-        taskManager.addNewSubtask(towTowSubtask);
+    void deleteAllSubtasksTest(){
+
         taskManager.getTaskById(firstTask.getId());
         taskManager.getTaskById(secondTask.getId());
         taskManager.getEpicById(firstEpic.getId());
@@ -149,25 +139,30 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void updateTaskTest() throws IOException{
-        taskManager.addNewTask(firstTask);
-        taskManager.updateTask(new Task("купить яблок", "красных", TaskStatus.NEW, firstTask.getId()));
+    void updateTaskTest(){
+        taskManager.updateTask(new Task("купить яблок", "красных", firstTask.getId(), TaskStatus.NEW, TypeOfTask.TASK));
         Assertions.assertEquals(taskManager.getTaskById(firstTask.getId()).getDescription(), "красных");
     }
 
     @Test
     void updateEpicTest() {
-        taskManager.addNewEpic(secondEpic);
-        Epic newEpic = new Epic("придумать картинку", " ", secondEpic.getId());
-        taskManager.updateEpic(newEpic);
+        taskManager.updateEpic(new Epic("придумать картинку", " ", secondEpic.getId()));
         Assertions.assertEquals(taskManager.getEpicById(secondEpic.getId()).getName(), "придумать картинку");
     }
 
     @Test
     void updateSubtaskTest() {
-        taskManager.addNewEpic(secondEpic);
-        towTowSubtask = new Subtask(" ", " ", secondEpic.getId(), TaskStatus.IN_PROGRESS);
-        taskManager.addNewSubtask(towTowSubtask);
-        Assertions.assertEquals(taskManager.getSubtaskById(towTowSubtask.getId()).getTaskStatus(), TaskStatus.IN_PROGRESS);
+        taskManager.updateSubtask(new Subtask(" ", "description3_1", threeTwoSubtask.getId(), secondEpic.getId(), TaskStatus.NEW));
+        Assertions.assertEquals("description3_1", taskManager.getSubtaskById(threeTwoSubtask.getId()).getDescription());
     }
+
+    @Test
+    void checkingIntersectionTwoTasksTest() {
+        Assertions.assertEquals(false, taskManager.checkingIntersectionTwoTasks(firstTask, secondTask));
+        Assertions.assertEquals(false, taskManager.checkingIntersectionTwoTasks(secondTask, firstTask));
+        Assertions.assertEquals(true, taskManager.checkingIntersectionTwoTasks(fourTwoSubtask, threeTwoSubtask));
+        Assertions.assertEquals(true, taskManager.checkingIntersectionTwoTasks(fourTwoSubtask, fifthTwoSubtask));
+        Assertions.assertEquals(true, taskManager.checkingIntersectionTwoTasks(sixthTwoSubtask, fifthTwoSubtask));
+    }
+
 }

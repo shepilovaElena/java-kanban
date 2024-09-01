@@ -2,6 +2,8 @@ package ru.yandex.practicum.javakanban.model;
 
 import ru.yandex.practicum.javakanban.manager.TypeOfTask;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -9,8 +11,11 @@ public class Task {
     private String description;
     private TaskStatus taskStatus;
 
-    private TypeOfTask typeOfTask = TypeOfTask.TASK;
+    private TypeOfTask typeOfTask;
     private int id;
+    private Duration duration;
+    private LocalDateTime startTime;
+
 
 
     public Task(String name, String description, TaskStatus taskStatus, TypeOfTask typeOfTask) {
@@ -20,12 +25,31 @@ public class Task {
         this.typeOfTask = typeOfTask;
     }
 
-    public Task(String name, String description, TaskStatus taskStatus, int id, TypeOfTask typeOfTask) {
+    public Task(String name, String description, int id, TaskStatus taskStatus, TypeOfTask typeOfTask) {
+        this.id = id;
+        this.taskStatus = taskStatus;
+        this.name = name;
+        this.description = description;
+        this.typeOfTask = typeOfTask;
+    }
+
+    public Task(String name, String description, TaskStatus taskStatus, TypeOfTask typeOfTask, Duration duration, LocalDateTime startTime) {
+        this.taskStatus = taskStatus;
+        this.name = name;
+        this.description = description;
+        this.typeOfTask = typeOfTask;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String name, String description, TaskStatus taskStatus, int id, TypeOfTask typeOfTask, Duration duration, LocalDateTime startTime) {
         this.taskStatus = taskStatus;
         this.name = name;
         this.description = description;
         this.id = id;
         this.typeOfTask = typeOfTask;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public Task(String name, String description, int id, TypeOfTask typeOfTask) {
@@ -35,26 +59,41 @@ public class Task {
         this.typeOfTask = typeOfTask;
     }
 
-    public Task(String name, String description, TaskStatus taskStatus) {
+    public Task(String name, String description, int id, TypeOfTask typeOfTask, Duration duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.typeOfTask = typeOfTask;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String name, String description, TaskStatus taskStatus, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.typeOfTask = TypeOfTask.TASK;
         this.taskStatus = taskStatus;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
-    public Task(String name, String description, TaskStatus taskStatus, int id) {
+    public Task(String name, String description, TaskStatus taskStatus, int id, Duration duration, LocalDateTime startTime) {
         this.taskStatus = taskStatus;
         this.name = name;
         this.description = description;
         this.id = id;
         this.typeOfTask = TypeOfTask.TASK;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
-    public Task(String name, String description, int id) {
+    public Task(String name, String description, int id, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.typeOfTask = TypeOfTask.TASK;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
 
@@ -97,6 +136,10 @@ public class Task {
         this.id = id;
     }
 
+    public LocalDateTime getEndTime() {
+        return startTime.plusMinutes(duration.toMinutes());
+    }
+
 
 
 
@@ -120,5 +163,20 @@ public class Task {
                 '}';
     }
 
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
 
    }

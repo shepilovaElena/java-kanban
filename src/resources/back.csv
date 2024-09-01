@@ -1,4 +1,6 @@
-id,type,name,status,description,epic
-3,EPIC,написать текст,NEW,description3,
-5,EPIC,name,NEW,description5,
-4,SUBTASK,начать,NEW,description4,3
+id,type,name,status,description,start-time,duration,end-time,epic
+1,TASK,купить яблок,NEW,description1,15.09.2024 13:00,60,15.09.2024 14:00,
+2,TASK,отвезти кошку к ветеринару,NEW,description2,15.09.2024 08:00,240,15.09.2024 11:00,
+3,EPIC,написать текст,NEW,description3,01.09.2024 09:00,120,01.09.2024 11:00,
+5,EPIC,собрать вещи,NEW,description5,,,,
+4,SUBTASK,начать,NEW,description4,01.09.2024 09:00,120,01.09.2024 11:00,1

@@ -6,6 +6,7 @@ import ru.yandex.practicum.javakanban.model.Task;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface TaskManager<K extends Task> {
     Map<Integer, Task> getTasks();
@@ -21,7 +22,7 @@ public interface TaskManager<K extends Task> {
 
     int addNewEpic(Epic newEpic);
 
-    int addNewSubtask(Subtask newSubtask);
+    Optional<Integer> addNewSubtask(Subtask newSubtask);
 
     // удаление всех задач
     void deleteAllTasks();
@@ -60,5 +61,10 @@ public interface TaskManager<K extends Task> {
 
     void updateEpic(Epic updateEpic);
 
+    List<Task> getPrioritizedTasks();
+
+    Boolean checkingIntersectionTwoTasks(Task taskOne, Task taskTwo);
+
+    Boolean checkingIntersection(Task checkTask);
 
 }
