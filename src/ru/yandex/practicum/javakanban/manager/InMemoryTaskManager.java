@@ -119,14 +119,13 @@ public class InMemoryTaskManager implements TaskManager {
 
             epic.setDuration(firstSubtask.getDuration());
         }
-
     }
 
 
     // добавление новых задач
     @Override
     public int addNewTask(Task newTask) {
-        if (!checkingIntersection(newTask)){
+        if (!checkingIntersection(newTask)) {
         newTask.setId(generateId());
         tasks.put(newTask.getId(), newTask);
         if (newTask.getStartTime() != null) {
