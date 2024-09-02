@@ -243,8 +243,6 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.clear();
     }
 
-
-
     // получение задачи по идентификатору
     @Override
     public Task getTaskById(int id) {
@@ -253,7 +251,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return tasks.get(id);
     }
-
 
     @Override
     public Epic getEpicById(int id) {
