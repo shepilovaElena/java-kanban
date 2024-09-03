@@ -63,8 +63,4 @@ public interface TaskManager<K extends Task> {
 
     List<Task> getPrioritizedTasks();
 
-    Boolean checkingIntersectionTwoTasks(Task taskOne, Task taskTwo);
-
-    Boolean checkingIntersection(Task checkTask);
-
 }

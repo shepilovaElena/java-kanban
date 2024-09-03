@@ -17,10 +17,10 @@ import java.util.Optional;
 
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private Path file;
+    private Path path;
 
-    public void setFile(Path file) {
-        this.file = file;
+    public void setFile(Path path) {
+        this.path = path;
     }
 
     public void setFileToHistory(Path fileToHistory) {
@@ -29,10 +29,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private Path fileToHistory;
 
-    public FileBackedTaskManager(Path file, Path fileToHistory) {
+    public FileBackedTaskManager(Path path, Path fileToHistory) {
         super();
         this.fileToHistory = fileToHistory;
-        this.file = file;
+        this.path = path;
     }
 
     public FileBackedTaskManager() {
@@ -144,8 +144,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    public Path getFile() {
-        return file;
+    public Path getPath() {
+        return path;
     }
 
     public Path getFileToHistory() {
@@ -171,7 +171,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     lines.add(taskToString(subtask));
                 }
             }
-            FileWriter writer = new FileWriter(file.toFile(), StandardCharsets.UTF_8);
+            FileWriter writer = new FileWriter(path.toFile(), StandardCharsets.UTF_8);
             BufferedWriter bw = new BufferedWriter(writer);
             bw.write("id,type,name,status,description,start-time,duration,end-time,epic");
             bw.newLine();
@@ -241,7 +241,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     // восстановление состояния менеджера
     public void  loadFromFile() throws IOException {
         List<String> lines = new ArrayList<>();
-        FileReader reader = new FileReader(file.toFile(), StandardCharsets.UTF_8);
+        FileReader reader = new FileReader(path.toFile(), StandardCharsets.UTF_8);
         BufferedReader br = new BufferedReader(reader);
 
         while (br.ready()) {

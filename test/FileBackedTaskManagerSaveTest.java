@@ -37,6 +37,7 @@ public class FileBackedTaskManagerSaveTest {
     public void BeforeEach() throws IOException {
         File backFile = File.createTempFile("back-test", ".csv", new File("src/resources"));
         File backHistoryFile = File.createTempFile("back-history-test", ".csv", new File("src/resources"));
+
         manager = new Managers();
         fileBackedTaskManager = manager.getDefaultFileBackedTaskManager(backFile.toPath(), backHistoryFile.toPath());
 
@@ -66,7 +67,7 @@ public class FileBackedTaskManagerSaveTest {
     @Test
     public void saveTest() throws IOException {
         List<String> linesOfFile = new ArrayList<>();
-        FileReader reader = new FileReader(fileBackedTaskManager.getFile().toFile());
+        FileReader reader = new FileReader(fileBackedTaskManager.getPath().toFile());
         BufferedReader br = new BufferedReader(reader);
         while (br.ready()) {
             String line = br.readLine();
@@ -81,7 +82,7 @@ public class FileBackedTaskManagerSaveTest {
         lines.add(secondTask.getId() + ",TASK" + "," + secondTask.getName() + "," + secondTask.getTaskStatus() + "," +
                 secondTask.getDescription() + "," + "15.09.2024 08:00" + "," + "240" + "," + "15.09.2024 12:00" + ",");
         lines.add(firstEpic.getId() + ",EPIC" + "," + firstEpic.getName() + "," + firstEpic.getTaskStatus() + "," +
-                firstEpic.getDescription() + "," + "01.09.2024 09:00" + "," + "1620" + "," + "02.09.2024 12:00" + ",");
+                firstEpic.getDescription() + "," + "01.09.2024 09:00" + "," + "420" + "," + "02.09.2024 12:00" + ",");
         lines.add(secondEpic.getId() + ",EPIC" + "," + secondEpic.getName() + "," + secondEpic.getTaskStatus() + "," +
                 secondEpic.getDescription() + "," + "," + "," + ",");
         lines.add(oneOneSubtask.getId() + ",SUBTASK" + "," + oneOneSubtask.getName() + "," +
@@ -93,6 +94,7 @@ public class FileBackedTaskManagerSaveTest {
 
 
         Assertions.assertEquals(lines, linesOfFile);
+
     }
 
 

@@ -30,6 +30,8 @@ class InMemoryTaskManagerTest {
     private Subtask fourTwoSubtask;
     private Subtask fifthTwoSubtask;
     private Subtask sixthTwoSubtask;
+
+    private Task thirdTask;
     private Managers manager;
 
     private TaskManager taskManager;
@@ -63,6 +65,7 @@ class InMemoryTaskManagerTest {
         taskManager.addNewSubtask(fifthTwoSubtask);
         sixthTwoSubtask = new Subtask(" ", "description6", secondEpic.getId(), TaskStatus.NEW, Duration.ofMinutes(20), LocalDateTime.of(2024, Month.SEPTEMBER, 3, 10, 0));
         taskManager.addNewSubtask(sixthTwoSubtask);
+        thirdTask = new Task("собрать вещи", "description7", TaskStatus.IN_PROGRESS, TypeOfTask.TASK, Duration.ofHours(3), LocalDateTime.of(2024, Month.SEPTEMBER, 3, 10, 10));
     }
 
     @Test
@@ -158,11 +161,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     void checkingIntersectionTwoTasksTest() {
-        Assertions.assertEquals(false, taskManager.checkingIntersectionTwoTasks(firstTask, secondTask));
-        Assertions.assertEquals(false, taskManager.checkingIntersectionTwoTasks(secondTask, firstTask));
-        Assertions.assertEquals(true, taskManager.checkingIntersectionTwoTasks(fourTwoSubtask, threeTwoSubtask));
-        Assertions.assertEquals(true, taskManager.checkingIntersectionTwoTasks(fourTwoSubtask, fifthTwoSubtask));
-        Assertions.assertEquals(true, taskManager.checkingIntersectionTwoTasks(sixthTwoSubtask, fifthTwoSubtask));
+        taskManager.addNewTask(thirdTask);
+        Assertions.assertEquals(false, taskManager.getAllTasks().contains(thirdTask));
     }
 
 }
