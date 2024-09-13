@@ -2,10 +2,10 @@ package ru.yandex.practicum.javakanban.manager;
 
 import java.nio.file.Path;
 
-public class Managers  {
+public class Managers {
 
     public  TaskManager getDefault() {
-        return new InMemoryTaskManager();
+        return  new InMemoryTaskManager();
     }
 
     public  HistoryManager getDefaultHistory() {
@@ -15,4 +15,5 @@ public class Managers  {
     public FileBackedTaskManager getDefaultFileBackedTaskManager(Path file, Path fileToHistory) {
         return new FileBackedTaskManager(file, fileToHistory);
     }
+
 }
