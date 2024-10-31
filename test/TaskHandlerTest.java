@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.*;
+import ru.yandex.practicum.javakanban.handlers.DurationAdapter;
 import ru.yandex.practicum.javakanban.handlers.LocalDateTimeAdapter;
 import ru.yandex.practicum.javakanban.manager.*;
 import ru.yandex.practicum.javakanban.model.Task;
@@ -46,6 +47,7 @@ public class TaskHandlerTest {
         gson = new GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .create();
     }
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.javakanban.handlers.DurationAdapter;
 import ru.yandex.practicum.javakanban.handlers.LocalDateTimeAdapter;
 import ru.yandex.practicum.javakanban.handlers.PrioritizedHandler;
 import ru.yandex.practicum.javakanban.manager.HistoryManager;
@@ -57,6 +58,7 @@ public class PrioritizedHandlerTest {
         gson = new GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .create();
     }
 
