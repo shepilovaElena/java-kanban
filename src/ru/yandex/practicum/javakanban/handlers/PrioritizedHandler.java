@@ -1,6 +1,8 @@
 package ru.yandex.practicum.javakanban.handlers;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
@@ -14,13 +16,22 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
         this.taskManager = taskManager;
     }
 
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        String response;
+
+        Gson gson = new GsonBuilder()
+                .serializeNulls()
+                .create();
+
         if (exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getPath().equals("/prioritized")) {
-            sendText(exchange, "Действие выполнено корректно.");
+            response = gson.toJson(taskManager.getPrioritizedTasks());
+            sendText(exchange, response);
         } else {
-            sendNotFound(exchange, "Такого действия нет.");
+            sendNotFound(exchange, "Такого пути нет.");
         }
     }
-
 }
+
+

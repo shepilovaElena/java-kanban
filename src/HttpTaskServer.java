@@ -1,14 +1,15 @@
 
 import com.sun.net.httpserver.HttpServer;
-import ru.yandex.practicum.javakanban.manager.FileBackedTaskManager;
+import ru.yandex.practicum.javakanban.manager.HistoryManager;
+import ru.yandex.practicum.javakanban.manager.InMemoryTaskManager;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.handlers.TasksHandler;
 import ru.yandex.practicum.javakanban.handlers.SubtasksHandler;
 import ru.yandex.practicum.javakanban.handlers.EpicsHandler;
 import ru.yandex.practicum.javakanban.handlers.HistoryHandler;
 import ru.yandex.practicum.javakanban.handlers.PrioritizedHandler;
+import ru.yandex.practicum.javakanban.manager.TaskManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -16,20 +17,22 @@ import java.net.InetSocketAddress;
 public class HttpTaskServer {
 
     private static final int PORT = 8080;
+    private static InMemoryTaskManager taskManager;
+    private static HistoryManager historyManager;
+
+    public HttpTaskServer(InMemoryTaskManager taskManager) {
+        this.taskManager = taskManager;
+    }
 
     public static void main(String[] args) throws IOException {
-        File backFile = File.createTempFile("back-test", ".csv", new File("src/resources"));
-        File backHistoryFile = File.createTempFile("back-history-test", ".csv", new File("src/resources"));
 
-        Managers manager = new Managers();
-        FileBackedTaskManager fileBackedTaskManager = manager.getDefaultFileBackedTaskManager(backFile.toPath(), backHistoryFile.toPath());
+        HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
 
-        HttpServer httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
-        httpServer.createContext("/tasks", new TasksHandler(fileBackedTaskManager));
-        httpServer.createContext("/subtasks", new SubtasksHandler(fileBackedTaskManager));
-        httpServer.createContext("/epics", new EpicsHandler(fileBackedTaskManager));
-        httpServer.createContext("/history", new HistoryHandler(fileBackedTaskManager));
-        httpServer.createContext("/prioritized", new PrioritizedHandler(fileBackedTaskManager));
+        httpServer.createContext("/tasks", new TasksHandler(taskManager));
+        httpServer.createContext("/subtasks", new SubtasksHandler(taskManager));
+        httpServer.createContext("/epics", new EpicsHandler(taskManager));
+        httpServer.createContext("/history", new HistoryHandler(historyManager));
+        httpServer.createContext("/prioritized", new PrioritizedHandler(taskManager));
         startServer(httpServer);
 
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
@@ -39,9 +42,7 @@ public class HttpTaskServer {
         httpServer.start();
     }
 
-    public static void stopServer(HttpServer httpServer) {
-        httpServer.stop(1);
-    }
+
 }
 
 

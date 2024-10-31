@@ -44,7 +44,7 @@ public class BaseHttpHandler {
 
     protected Optional<Integer> getTasksId(HttpExchange exchange) {
         String[] path = exchange.getRequestURI().getPath().split("/");
-        if (path.length == 3) {
+        if (path.length >= 3) {
             try {
                 return Optional.of(Integer.parseInt(path[2]));
             } catch (NumberFormatException exception) {
@@ -54,5 +54,6 @@ public class BaseHttpHandler {
             return Optional.empty();
         }
     }
-
 }
+
+

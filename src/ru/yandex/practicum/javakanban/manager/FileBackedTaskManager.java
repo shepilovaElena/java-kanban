@@ -62,10 +62,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 
     @Override
-    public int addNewTask(Task newTask) {
+    public Optional<Integer> addNewTask(Task newTask) {
         super.addNewTask(newTask);
         save();
-        return newTask.getId();
+        return Optional.of(newTask.getId());
     }
 
     @Override
