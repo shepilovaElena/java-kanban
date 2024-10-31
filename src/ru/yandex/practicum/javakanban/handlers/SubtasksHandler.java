@@ -9,6 +9,7 @@ import ru.yandex.practicum.javakanban.model.Subtask;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         Gson gson = new GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .create();
 
 

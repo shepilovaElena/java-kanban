@@ -8,6 +8,8 @@ import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
     private TaskManager taskManager;
@@ -23,6 +25,8 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
 
         Gson gson = new GsonBuilder()
                 .serializeNulls()
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
         if (exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getPath().equals("/prioritized")) {
