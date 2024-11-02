@@ -1,13 +1,11 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.javakanban.handlers.DurationAdapter;
 import ru.yandex.practicum.javakanban.handlers.LocalDateTimeAdapter;
-import ru.yandex.practicum.javakanban.handlers.SubtasksHandler;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
 import ru.yandex.practicum.javakanban.model.Epic;
@@ -15,7 +13,6 @@ import ru.yandex.practicum.javakanban.model.Subtask;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -35,22 +32,19 @@ public class SubtaskHandlerTest {
 
     public TaskManager taskManager;
 
-    public HttpServer httpServer;
+    public HttpTaskServer httpTaskServer;
 
 
 
     @BeforeEach
     public void beforeEach() throws IOException {
-
         manager = new Managers();
         taskManager = manager.getDefault();
 
-        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+        httpTaskServer = new HttpTaskServer(taskManager);
 
-        httpServer.createContext("/subtasks", new SubtasksHandler(taskManager));
+        httpTaskServer.startServer();
 
-
-        httpServer.start();
         gson = new GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -60,14 +54,15 @@ public class SubtaskHandlerTest {
 
     @AfterEach
     public void afterEach() {
-        httpServer.stop(0);
+        httpTaskServer.stopServer(httpTaskServer.getHttpServer());
     }
 
     @Test
     public void getSubtasksTest() throws IOException, InterruptedException {
         epic = new Epic("написать текст", " ");
         taskManager.addNewEpic(epic);
-        subtask = new Subtask("начать", "description4", epic.getId(), TaskStatus.NEW, Duration.ofHours(2), LocalDateTime.of(2024, Month.SEPTEMBER, 5, 9, 0));
+        subtask = new Subtask("начать", "description4", epic.getId(), TaskStatus.NEW, Duration.ofHours(2),
+                LocalDateTime.of(2024, Month.SEPTEMBER, 5, 9, 0));
         taskManager.addNewSubtask(subtask);
 
         HttpClient client = HttpClient.newHttpClient();

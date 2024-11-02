@@ -1,12 +1,10 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.javakanban.handlers.DurationAdapter;
-import ru.yandex.practicum.javakanban.handlers.EpicsHandler;
 import ru.yandex.practicum.javakanban.handlers.LocalDateTimeAdapter;
 import ru.yandex.practicum.javakanban.manager.Managers;
 import ru.yandex.practicum.javakanban.manager.TaskManager;
@@ -15,7 +13,6 @@ import ru.yandex.practicum.javakanban.model.Subtask;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -35,7 +32,7 @@ public class EpicsHandlerTest {
 
     public TaskManager taskManager;
 
-    public HttpServer httpServer;
+    public HttpTaskServer httpTaskServer;
 
 
 
@@ -45,11 +42,10 @@ public class EpicsHandlerTest {
         manager = new Managers();
         taskManager = manager.getDefault();
 
-        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+        httpTaskServer = new HttpTaskServer(taskManager);
 
-        httpServer.createContext("/epics", new EpicsHandler(taskManager));
+        httpTaskServer.startServer();
 
-        httpServer.start();
         gson = new GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -59,7 +55,7 @@ public class EpicsHandlerTest {
 
     @AfterEach
     public void afterEach() {
-        httpServer.stop(0);
+        httpTaskServer.stopServer(httpTaskServer.getHttpServer());
     }
 
     @Test

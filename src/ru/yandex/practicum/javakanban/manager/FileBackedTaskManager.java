@@ -69,10 +69,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int addNewEpic(Epic newEpic) {
+    public Optional<Integer> addNewEpic(Epic newEpic) {
         super.addNewEpic(newEpic);
         save();
-        return newEpic.getId();
+        return Optional.of(newEpic.getId());
     }
 
     @Override

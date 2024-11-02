@@ -1,16 +1,13 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.*;
 import ru.yandex.practicum.javakanban.handlers.DurationAdapter;
 import ru.yandex.practicum.javakanban.handlers.LocalDateTimeAdapter;
 import ru.yandex.practicum.javakanban.manager.*;
 import ru.yandex.practicum.javakanban.model.Task;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
-import ru.yandex.practicum.javakanban.handlers.TasksHandler;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -29,7 +26,7 @@ public class TaskHandlerTest {
 
     public TaskManager taskManager;
 
-    public HttpServer httpServer;
+    public HttpTaskServer httpTaskServer;
 
 
 
@@ -39,11 +36,10 @@ public class TaskHandlerTest {
         manager = new Managers();
         taskManager = manager.getDefault();
 
-        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+        httpTaskServer = new HttpTaskServer(taskManager);
 
-        httpServer.createContext("/tasks", new TasksHandler(taskManager));
+        httpTaskServer.startServer();
 
-        httpServer.start();
         gson = new GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -53,7 +49,7 @@ public class TaskHandlerTest {
 
     @AfterEach
         public void afterEach() {
-        httpServer.stop(0);
+        httpTaskServer.stopServer(httpTaskServer.getHttpServer());
     }
 
     @Test

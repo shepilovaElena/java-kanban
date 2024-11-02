@@ -95,7 +95,7 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
                             sendHasInteractions(exchange, "Задача пересекаются по времени с уже существующими.");
                             break;
                         } else {
-                            sendText201(exchange, "Действие выполнено корректно.");
+                            sendText201(exchange, "Действие выполнено корректно. id задачи равен " + taskId.get());
                             break;
                         }
                     } else {

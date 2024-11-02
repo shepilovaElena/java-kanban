@@ -20,7 +20,7 @@ public interface TaskManager<K extends Task> {
     // добавление новых задач
     Optional<Integer> addNewTask(Task newTask);
 
-    int addNewEpic(Epic newEpic);
+    Optional<Integer> addNewEpic(Epic newEpic);
 
     Optional<Integer> addNewSubtask(Subtask newSubtask);
 

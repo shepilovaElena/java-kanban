@@ -66,7 +66,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
 
                 try {
                     resp = Optional.of(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
-                } catch (IOException e) {  ///// проверить тип ошибок!
+                } catch (IOException e) {
                     sendNotFound(exchange, "ошибка");
                     break;
                 }
@@ -75,7 +75,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
 
                 try {
                     task = gson.fromJson(resp.get(), Task.class);
-                } catch (RuntimeException e) { //// тип ошибки!!!
+                } catch (RuntimeException e) {
                     sendNotFound(exchange, "ошибка");
                     break;
                 }
@@ -90,7 +90,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                             sendHasInteractions(exchange, "Задача пересекаются по времени с уже существующими.");
                             break;
                         } else {
-                            sendText201(exchange, "Действие выполнено корректно.");
+                            sendText201(exchange, "Действие выполнено корректно. id задачи равен " + taskId.get());
                             break;
                         }
                     } else {

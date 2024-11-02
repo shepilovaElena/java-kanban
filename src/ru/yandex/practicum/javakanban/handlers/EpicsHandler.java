@@ -83,7 +83,7 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
 
                 try {
                     resp = Optional.of(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
-                } catch (IOException e) { // тип ошибки
+                } catch (IOException e) {
                     sendNotFound(exchange, "ошибка");
                     break;
                 }
@@ -92,15 +92,39 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
 
                 try {
                     epic = gson.fromJson(resp.get(), Epic.class);
-                } catch (RuntimeException e) { // тип ошибки
+                } catch (RuntimeException e) {
                     sendNotFound(exchange, "ошибка");
                     break;
                 }
+                if (!path[1].equals("epics")) {
+                    sendNotFound(exchange, "Путь не найден.");
+                    break;
+                } else {
+                    if (path.length == 2) {
+                        Optional<Integer> taskId = taskManager.addNewEpic(epic);
+                        if (taskId.isEmpty()) {
+                            sendHasInteractions(exchange, "Задача пересекаются по времени с уже существующими.");
+                            break;
+                        } else {
+                            sendText201(exchange, "Действие выполнено корректно. id задачи равен " + taskId.get());
+                            break;
+                        }
+                    } else {
+                        if (id.isEmpty() || !taskManager.getSubtasks().containsKey(id.get())) {
+                            sendNotFound(exchange, "Путь не найден.");
+                            break;
+                        } else {
+                            taskManager.updateEpic(epic);
+                            sendText201(exchange, "Действие выполнено корректно.");
+                            break;
+                        }
+                    }
+                }
 
-                taskManager.addNewEpic(epic);
-                response = gson.toJson(taskManager.getEpicById(epic.getId()));
-                sendText201(exchange, response);
-                break;
+//                taskManager.addNewEpic(epic);
+//                response = gson.toJson(taskManager.getEpicById(epic.getId()));
+//                sendText201(exchange, response);
+//                break;
 
             case "DELETE":
                 if (id.isEmpty()) {

@@ -1,6 +1,5 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,11 +7,9 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.javakanban.manager.*;
 import ru.yandex.practicum.javakanban.model.Task;
 import ru.yandex.practicum.javakanban.model.TaskStatus;
-import ru.yandex.practicum.javakanban.handlers.HistoryHandler;
 import ru.yandex.practicum.javakanban.handlers.LocalDateTimeAdapter;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -31,7 +28,7 @@ public class HistoryHandlerTest {
     InMemoryTaskManager taskManager;
 
     public HistoryManager historyManager;
-    public HttpServer httpServer;
+    public HttpTaskServer httpTaskServer;
 
 
 
@@ -42,11 +39,10 @@ public class HistoryHandlerTest {
         taskManager = (InMemoryTaskManager) manager.getDefault();
         historyManager = manager.getDefaultHistory();
 
-        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+        httpTaskServer = new HttpTaskServer(historyManager);
 
-        httpServer.createContext("/history", new HistoryHandler(historyManager));
+        httpTaskServer.startServer();
 
-        httpServer.start();
         gson = new GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -55,7 +51,7 @@ public class HistoryHandlerTest {
 
     @AfterEach
     public void afterEach() {
-        httpServer.stop(0);
+        httpTaskServer.stopServer(httpTaskServer.getHttpServer());
     }
 
     @Test
