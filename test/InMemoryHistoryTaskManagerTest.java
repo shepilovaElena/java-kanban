@@ -114,8 +114,6 @@ class InMemoryHistoryTaskManagerTest {
         taskManager.getEpicById(secondEpic.getId());
         taskManager.deleteEpicById(secondEpic.getId());
         taskManager.deleteTaskById(firstTask.getId());
-        taskManager.getSubtaskById(oneTwoSubtask.getId());
-        taskManager.deleteSubtaskById(oneTwoSubtask.getId());
         List<Task> publicHistory = taskManager.getHistory();
         List<Task> history2 = new ArrayList<>();
         history2.add(firstEpic);

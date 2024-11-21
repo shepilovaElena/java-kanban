@@ -18,9 +18,9 @@ public interface TaskManager<K extends Task> {
     List<Task> getHistory();
 
     // добавление новых задач
-    int addNewTask(Task newTask);
+    Optional<Integer> addNewTask(Task newTask);
 
-    int addNewEpic(Epic newEpic);
+    Optional<Integer> addNewEpic(Epic newEpic);
 
     Optional<Integer> addNewSubtask(Subtask newSubtask);
 
